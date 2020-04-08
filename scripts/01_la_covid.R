@@ -19,6 +19,17 @@ library(ggthemes)
 la_covid <- read_csv("data/la_covid.csv")
 
 
+# UPDATE DATA -------------------------------------------------------------
+add_data <- function(date, cases,deaths, hosp, events = NA) {
+  return(data.frame(date = date, num_new_cases = cases, num_new_deaths = deaths, hospitalized_ever = hosp, events = events, stringsAsFactors = FALSE))
+}
+max(la_covid$date) S
+la_covid <- bind_rows(
+  la_covid 
+  # Add new data sets here LAST UPDATED 4/8
+  )
+
+write_csv(la_covid, "data/la_covid.csv")
 # CLEAN DATA --------------------------------------------------------------
 
 la_covid$date <- as.Date(la_covid$date, format = "%m/%d/%Y")
@@ -93,3 +104,4 @@ p6 <- ggplot(p6_data, aes(x = date, y = value, color = factor(type)))+
   xlab("Date")+
   ylab("Number of Cases")+
   ggthemes::theme_tufte()
+
