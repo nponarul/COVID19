@@ -11,6 +11,26 @@ rm(list = ls())
 #Load Packages
 library(tidyverse)
 
+# define function to read in as character and clean names
+read_in <- function(path) {
+  tmp <- read_csv(path, col_types = cols(.default = "c"))
+  names(tmp) <- str_replace_all(str_replace_all(tolower(names(tmp)), " ", "_"), "\\/", "_")
+  # recast name cleanup for long and lat
+  if("lat" %in% names(tmp)) {
+    tmp <- tmp %>% 
+      rename(
+        latitude = lat
+      )
+  }
+  
+  if("long_" %in% names(tmp)) {
+    tmp <- tmp %>% 
+      rename(
+        longitude = long_
+      )
+  }
+  return(tmp)
+}
 
 refresh_jhu <- function() {
   if(!file.exists("data/jhu")) dir.create("data/jhu/")
@@ -34,7 +54,7 @@ refresh_jhu <- function() {
   # load and zip up files into one R object and output
   # Create a list of read-in files
   read_files <- list.files("data/jhu_reports/", full.names = TRUE) %>% 
-    set_names(nm = paste0("file_",basename(.) %>% tools::file_path_sans_ext() %>% str_replace_all("-","_"))) %>% map(read_csv)
+    set_names(nm = paste0("file_",basename(.) %>% tools::file_path_sans_ext() %>% str_replace_all("-","_"))) %>% map(read_in)
   
   # For blog, this is the statement to read them in as independent objects:
   # pmap(.l = list(.x = names(read_files), .y = read_files), .f = ~assign(.x, .y, envir = .GlobalEnv))
