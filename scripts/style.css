@@ -1,0 +1,14 @@
+/* Style for plots report output */
+
+body{
+	font-family: serif;
+}
+
+h1,h2,h3,h4,h5,h6{
+	font-family: serif;
+}
+
+.title,.author,.date{
+	text-align: center;
+}
+

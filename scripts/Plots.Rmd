@@ -1,0 +1,19 @@
+---
+title: "COVID-19 Visualizations"
+author: "Nellie Ponarul"
+date: "4/9/2020"
+output: 
+  html_document:
+    css: style.css
+---
+<!-- add class.source and class.output to add css classes to R markdown chunks-->
+
+
+
+## Quick Look at New Zealand
+New Zealand had it's first confirmed case of COVID-19 on February 28, 2020. On March 19, it shut its borders to all non-NZ citizens, and began a severe lockdown on March 25. So far, New Zealand has only reported 1 death.
+
+```{r, out.width = "400px", echo = FALSE}
+
+knitr::include_graphics("../data/nz_cum_plot.png")
+```
