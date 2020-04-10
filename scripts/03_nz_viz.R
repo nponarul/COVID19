@@ -84,6 +84,7 @@ nz_cum <- nz %>%
 
 nz_cum_plot <- ggplot(nz_cum, aes(x = last_update, y = value, color = factor(type, levels = c("confirmed", "recovered", "deaths"))))+
   geom_line()+
+  geom_vline(xintercept = as.Date("2020-03-19"), show.legend = FALSE)+
   scale_y_continuous(labels = scales::comma)+
   scale_color_manual(values = brewer.pal(3, "Set1"), labels = c("Cases", "Recoveries", "Deaths"), name = "")+
   labs(title = "Cumulative Confirmed Cases, Recoveries\nand Deaths in New Zealand")+

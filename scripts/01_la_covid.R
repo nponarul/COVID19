@@ -23,7 +23,7 @@ la_covid <- read_csv("data/la_covid.csv")
 add_data <- function(date, cases,deaths, hosp, events = NA) {
   return(data.frame(date = date, num_new_cases = cases, num_new_deaths = deaths, hospitalized_ever = hosp, events = events, stringsAsFactors = FALSE))
 }
-max(la_covid$date) S
+max(la_covid$date) 
 la_covid <- bind_rows(
   la_covid 
   # Add new data sets here LAST UPDATED 4/8
