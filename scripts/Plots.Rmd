@@ -10,10 +10,16 @@ output:
 
 
 
-### Quick Look at New Zealand
-New Zealand had it's first confirmed case of COVID-19 on February 28, 2020. On March 19, it shut its borders to all non-NZ citizens, and began a severe lockdown on March 25. So far, New Zealand has only reported 1 death.
+## Quick Look at New Zealand
+#### New Zealand had it's first confirmed case of COVID-19 on February 28, 2020. On March 19, it shut its borders to all non-NZ citizens, and began a severe lockdown on March 25. So far, New Zealand has only reported 1 death.
+<br></br>
 
-```{r, out.width = "400px", out.height = "400px", echo = FALSE}
-
-knitr::include_graphics("../data/nz_cum_plot.png")
+```{r, echo = FALSE, out.width = "50%"}
+knitr::include_graphics(c("../data/nz_cum.png", "../data/nz_cum_perc.png"))
 ```
+<br></br>
+```{r, echo = FALSE, out.width = "50%", fig.align = "center"}
+knitr::include_graphics("../data/nz_daily.png")
+```
+
+

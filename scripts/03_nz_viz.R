@@ -99,7 +99,7 @@ nz_cum_plot_perc <- ggplot(nz_cum, aes(x = last_update, y = value/4885500, color
   geom_line()+
   scale_y_continuous(labels = scales::percent)+
   scale_color_manual(values = brewer.pal(3, "Set1"), labels = c("Cases", "Recoveries", "Deaths"), name = "")+
-  labs(title = "Cumulative Confirmed Cases, Recoveries\nand Deaths in New Zealand")+
+  labs(title = "Cumulative Confirmed Cases, Recoveries\nand Deaths in New Zealand", subtitle = "As percentage of total population")+
   xlab("Date")+
   ylab("Number of Individuals")+
   ggthemes::theme_tufte()
