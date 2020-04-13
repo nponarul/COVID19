@@ -25,8 +25,12 @@ add_data <- function(date, cases,deaths, hosp, events = NA) {
 }
 max(la_covid$date) 
 la_covid <- bind_rows(
-  la_covid 
-  # Add new data sets here LAST UPDATED 4/8
+  la_covid, 
+  # Add new data sets here LAST UPDATED 4/9
+  add_data("04/10/2020", 475, 18, 2043),
+  add_data("04/11/2020", 456, 25, 2172),
+  add_data("04/12/2020", 323, 31, 2246),
+  add_data("04/13/2020", 239, 25, 2354)
   )
 
 write_csv(la_covid, "data/la_covid.csv")
