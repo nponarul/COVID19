@@ -23,14 +23,11 @@ la_covid <- read_csv("data/la_covid.csv")
 add_data <- function(date, cases,deaths, hosp, events = NA) {
   return(data.frame(date = date, num_new_cases = cases, num_new_deaths = deaths, hospitalized_ever = hosp, events = events, stringsAsFactors = FALSE))
 }
-max(la_covid$date) 
+max(as.Date(la_covid$date, format = "%m/%d/%Y")) 
 la_covid <- bind_rows(
   la_covid, 
-  # Add new data sets here LAST UPDATED 4/9
-  add_data("04/10/2020", 475, 18, 2043),
-  add_data("04/11/2020", 456, 25, 2172),
-  add_data("04/12/2020", 323, 31, 2246),
-  add_data("04/13/2020", 239, 25, 2354)
+  # Add new data sets here LAST UPDATED 4/15
+
   )
 
 write_csv(la_covid, "data/la_covid.csv")
