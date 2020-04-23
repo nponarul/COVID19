@@ -26,8 +26,7 @@ add_data <- function(date, cases,deaths, hosp, events = NA) {
 max(as.Date(la_covid$date, format = "%m/%d/%Y")) 
 la_covid <- bind_rows(
   la_covid, 
-  # Add new data sets here LAST UPDATED 4/16
-
+  # Add new data sets here LAST UPDATED 4/22
   )
 
 write_csv(la_covid, "data/la_covid.csv")
@@ -126,3 +125,4 @@ p7 <- ggplot(p7_data %>% filter(date >= as.Date("2020-03-08")), aes(x = date, y 
   xlab("Date")+
   ylab("Number of Cases")+
   ggthemes::theme_tufte()
+
