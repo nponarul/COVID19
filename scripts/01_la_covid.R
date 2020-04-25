@@ -26,7 +26,8 @@ add_data <- function(date, cases,deaths, hosp, events = NA) {
 max(as.Date(la_covid$date, format = "%m/%d/%Y")) 
 la_covid <- bind_rows(
   la_covid, 
-  # Add new data sets here LAST UPDATED 4/22
+  # Add new data sets here LAST UPDATED 4/23
+
   )
 
 write_csv(la_covid, "data/la_covid.csv")
@@ -111,18 +112,20 @@ p7_data <- la_covid %>%
   mutate(new_hosp = hospitalized_ever - lag(hospitalized_ever)) %>%
   replace_na(list(new_hosp = 0)) %>% 
   mutate(avg_3_cases = ifelse(date >= as.Date("2020-03-08"), (num_new_cases + lag(num_new_cases, 1) + lag(num_new_cases, 2))/3, 0),
-         avg_3_hosp = ifelse(date >= as.Date("2020-03-08"), (new_hosp + lag(new_hosp, 1) + lag(new_hosp, 2))/3, 0),
-         avg_3_deaths = ifelse(date >= as.Date("2020-03-08"), (num_new_deaths + lag(num_new_deaths, 1) + lag(num_new_deaths, 2))/3, 0)) %>% 
-  select(date, avg_3_cases, avg_3_hosp, avg_3_deaths) %>% 
+         avg_3_hosp = ifelse(date >= as.Date("2020-03-08"), (new_hosp + lag(new_hosp, 1) + lag(new_hosp, 2) + lag(new_hosp,3))/4, 0),
+         avg_3_deaths = ifelse(date >= as.Date("2020-03-08"), (num_new_deaths + lag(num_new_deaths, 1) + lag(num_new_deaths, 2) + lag(num_new_deaths, 3))/4, 0)) %>% 
+  select(date, avg_3_hosp, avg_3_deaths) %>% 
   gather(type, value, -date)
 
-p7 <- ggplot(p7_data %>% filter(date >= as.Date("2020-03-08")), aes(x = date, y = value, color = factor(type, levels = c("avg_3_cases", "avg_3_hosp", "avg_3_deaths"))))+
+p7 <- ggplot(p7_data %>% filter(date >= as.Date("2020-03-08")), aes(x = date, y = value, color = factor(type, levels = c( "avg_3_hosp", "avg_3_deaths"))))+
   geom_line()+
-  scale_x_date(breaks = seq(as.Date("2020-03-08"), as.Date("2020-04-16"), by = 3))+
+  scale_x_date(breaks = seq(as.Date("2020-03-08"), as.Date("2020-04-23"), by = 3))+
   scale_y_continuous(labels = scales::comma)+
-  scale_color_manual(values = brewer.pal(3, "Set1"), labels = c("Cases", "Hospitalizations", "Deaths"), name = "")+
+  scale_color_manual(values = brewer.pal(3, "Set1"), labels = c( "Hospitalizations", "Deaths"), name = "")+
   labs(title = "Cumulative Cases, Hospitalizations, and Deaths in LA County")+
   xlab("Date")+
   ylab("Number of Cases")+
   ggthemes::theme_tufte()
+
+
 
