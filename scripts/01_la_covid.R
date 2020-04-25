@@ -27,10 +27,11 @@ max(as.Date(la_covid$date, format = "%m/%d/%Y"))
 la_covid <- bind_rows(
   la_covid, 
   # Add new data sets here LAST UPDATED 4/23
-
+  # add_data("04/24/2020", 1035,52, 4211 ),
+  # add_data("04/25/2020", 607, 48, 4319 )
   )
 
-write_csv(la_covid, "data/la_covid.csv")
+write_csv(la_covid %>% distinct(), "data/la_covid.csv")
 # CLEAN DATA --------------------------------------------------------------
 
 la_covid$date <- as.Date(la_covid$date, format = "%m/%d/%Y")
@@ -122,10 +123,59 @@ p7 <- ggplot(p7_data %>% filter(date >= as.Date("2020-03-08")), aes(x = date, y 
   scale_x_date(breaks = seq(as.Date("2020-03-08"), as.Date("2020-04-23"), by = 3))+
   scale_y_continuous(labels = scales::comma)+
   scale_color_manual(values = brewer.pal(3, "Set1"), labels = c( "Hospitalizations", "Deaths"), name = "")+
-  labs(title = "Cumulative Cases, Hospitalizations, and Deaths in LA County")+
+  labs(title = "3-day Average of Daily Hospitalizations, and Deaths in LA County")+
+  xlab("Date")+
+  ylab("Number of Cases")+
+  ggthemes::theme_tufte()
+
+# 8. Plot a percentage increase in hospitalizations (date of first hospitalization is 3/21)
+p8_data <- la_covid %>% 
+  mutate(
+    rate_hosp_diff = ifelse(hospitalized_ever == 0 & lag(hospitalized_ever,3) == 0, 0, (hospitalized_ever-lag(hospitalized_ever, 3))/hospitalized_ever) 
+  )
+
+p8 <- ggplot(p8_data %>% filter(date >= as.Date("2020-03-21")), aes(x = date, y = rate_hosp_diff))+
+  geom_line()+
+  scale_x_date(breaks = seq(as.Date("2020-03-21"), as.Date("2020-04-25"), by = 3))+
+  scale_y_continuous(labels = scales::percent, breaks = seq(0, 1, by = .1))+
+  # scale_color_manual(values = brewer.pal(3, "Set1"), labels = c( "Hospitalizations", "Deaths"), name = "")+
+  labs(title = "Percent Change in New Hospitalizations in LA County")+
+  xlab("Date")+
+  ylab("Number of Cases")+
+  ggthemes::theme_tufte()
+
+# 9. Plot the percentage change in cases 
+p9_data <- la_covid %>% 
+  mutate(
+    cum_new_cases = cumsum(num_new_cases),
+    rate_cases_diff = ifelse(cum_new_cases == 0 & lag(cum_new_cases,3) == 0, 0, (cum_new_cases-lag(cum_new_cases,3))/cum_new_cases)
+  )
+
+p9 <- ggplot(p9_data %>% filter(date >= as.Date("2020-03-08")), aes(x = date, y = rate_cases_diff))+
+  geom_line()+
+  scale_x_date(breaks = seq(as.Date("2020-03-08"), as.Date("2020-04-25"), by = 3))+
+  scale_y_continuous(labels = scales::percent, breaks = seq(0, 1, by = .1))+
+  # scale_color_manual(values = brewer.pal(3, "Set1"), labels = c( "Hospitalizations", "Deaths"), name = "")+
+  labs(title = "Percent Change in New Cases in LA County")+
   xlab("Date")+
   ylab("Number of Cases")+
   ggthemes::theme_tufte()
 
 
+# 9. Plot the percentage change in deaths 
+p10_data <- la_covid %>% 
+  mutate(
+    cum_new_deaths = cumsum(num_new_deaths),
+    rate_deaths_diff = ifelse(cum_new_deaths == 0 & lag(cum_new_deaths,3) == 0, 0, (cum_new_deaths-lag(cum_new_deaths,3))/cum_new_deaths)
+  )
+
+p10 <- ggplot(p10_data %>% filter(date >= as.Date("2020-03-19")), aes(x = date, y = rate_deaths_diff))+
+  geom_line()+
+  scale_x_date(breaks = seq(as.Date("2020-03-19"), as.Date("2020-04-25"), by = 3))+
+  scale_y_continuous(labels = scales::percent, breaks = seq(0, 1, by = .1))+
+  # scale_color_manual(values = brewer.pal(3, "Set1"), labels = c( "Hospitalizations", "Deaths"), name = "")+
+  labs(title = "Percent Change in New Deaths in LA County")+
+  xlab("Date")+
+  ylab("Number of Cases")+
+  ggthemes::theme_tufte()
 
